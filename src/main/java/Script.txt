@@ -1,6 +1,0 @@
-﻿help
-show
-info
-remove_by_id 50
-execute_script /home/s282747/Proga5/Script.txt
-save

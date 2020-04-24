@@ -10,16 +10,17 @@ import java.util.*;
  * Класс реализует обработку всех команд и хранение коллекции
  */
 public class Implementation {
-    int i = 0;
+    long id = 0;
+    int j = 1;
     private PriorityQueue<StudyGroup> col;
     private Date initDate;
     private Gson gson;
     private boolean wasStart;
-    protected static HashMap<String, String> map;
+    private HashMap<String, String> map;
 
     {
         gson = new Gson();
-        col = new PriorityQueue<>();
+        col = new PriorityQueue<>(new ComparatorDefault());
         map = new HashMap<>();
         map.put("help", "вывести справку по доступным командам");
         map.put("info", "вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.");
@@ -31,9 +32,9 @@ public class Implementation {
         map.put("save", "сохранить коллекцию в файл");
         map.put("execute_script file_name", "считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме");
         map.put("exit", "завершить программу (без сохранения в файл)");
-        map.put("add_if_max", "добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции");
-        map.put("add_if_min", "добавить новый элемент в коллекцию, если его значение меньше, чем у наименьшего элемента этой коллекции");
-        map.put("remove_greater id", "удалить из коллекции все элементы, превышающие заданный");
+        map.put("add_if_max", "добавить новый элемент в коллекцию, если его значение height превышает значение height наибольшего элемента этой коллекции");
+        map.put("add_if_min", "добавить новый элемент в коллекцию, если его значение height меньше, чем height у наименьшего элемента этой коллекции");
+        map.put("remove_greater height", "удалить из коллекции все элементы, превышающие заданный");
         map.put("remove_any_by_students_count studentsCount", "удалить из коллекции один элемент, значение поля studentsCount которого эквивалентно заданному");
         map.put("print_field_ascending_students_count", "вывести значения поля studentsCount в порядке возрастания");
         map.put("print_field_descending_form_of_education", "вывести значения поля formOfEducation в порядке убывания");
@@ -41,6 +42,7 @@ public class Implementation {
 
     /**
      * Метод загружает коллекцию и устанавливает дату инициаллизации
+     *
      * @param file
      * @throws IOException
      */
@@ -99,6 +101,7 @@ public class Implementation {
             }
         } while (name.equals(""));
 
+        id++;
         String cor_x;
         Integer x = null;
         while (x == null) {
@@ -285,7 +288,7 @@ public class Implementation {
                 !s_nationality.equals("INDIA") && !s_nationality.equals("VATICAN"));
 
         String s_loc_x;
-        Double loc_x = null ;
+        Double loc_x = null;
         while (loc_x == null) {
             try {
                 System.out.println("Введите координаты, x:");
@@ -332,7 +335,217 @@ public class Implementation {
             }
         }
 
-        studyGroup = new StudyGroup(name, new Coordinates(x, y), studentsCount, formOfEducation, semesterEnum,
+        studyGroup = new StudyGroup(id, name, new Coordinates(x, y), studentsCount, formOfEducation, semesterEnum,
+                new Person(per_name, height, hairColor, nationality, new Location(loc_x, loc_y, loc_z)));
+        col.add(studyGroup);
+        System.out.println("Элемент коллекции добавлен");
+    }
+    
+    public void add(String str1, String str2, String str3, String str4, String str5, String str6, String str7,
+                    String str8, String str9, String str10, String str11, String str12, String str13) {
+        StudyGroup studyGroup;
+        FormOfEducation formOfEducation;
+        Semester semesterEnum;
+        Color hairColor;
+        Country nationality;
+
+        id++;
+        String name;
+        if (str1.equals("")) {
+            System.out.println("Имя группы не может быть null. Коллекция не сохранена");
+            return;
+        } else {
+            name = str1;
+        }
+
+        int x;
+        try {
+            if (str2.equals("")) {
+                System.out.println("x не может быть null. Коллекция не сохранена");
+                return;
+            } else {
+                x = Integer.parseInt(str2);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Вы ввели строку или число выходит за пределы int. Коллекция не сохранена");
+            return;
+        }
+
+        double y;
+        try {
+            if (str3.equals("")) {
+                System.out.println("y не может быть null. Коллекция не сохранена");
+                return;
+            } else {
+                y = Double.parseDouble(str3);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Вы ввели строку или число выходит за пределы double. Коллекция не сохранена");
+            return;
+        }
+
+        int studentsCount;
+        try {
+            if (str4.equals("")) {
+                System.out.println("studentsCount не может быть null. Коллекция не сохранена");
+                return;
+            } else {
+                studentsCount = Integer.parseInt(str4);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Вы ввели строку или число выходит за пределы int. Коллекция не сохранена");
+            return;
+        }
+
+        switch (str5.toUpperCase()) {
+            case "DISTANCE_EDUCATION":
+                formOfEducation = FormOfEducation.DISTANCE_EDUCATION;
+                break;
+            case "FULL_TIME_EDUCATION":
+                formOfEducation = FormOfEducation.FULL_TIME_EDUCATION;
+                break;
+            case "EVENING_CLASSES":
+                formOfEducation = FormOfEducation.EVENING_CLASSES;
+                break;
+            case "":
+                System.out.println("formOfEducation не может быть null. Коллекция не сохранена");
+                return;
+            default:
+                System.out.println("Такой формы обучения нет. Коллекция не сохранена");
+                return;
+        }
+
+        switch (str6.toUpperCase()) {
+            case "FIRST":
+                semesterEnum = Semester.FIRST;
+                break;
+            case "THIRD":
+                semesterEnum = Semester.THIRD;
+                break;
+            case "FIFTH":
+                semesterEnum = Semester.FIFTH;
+                break;
+            case "EIGHTH":
+                semesterEnum = Semester.EIGHTH;
+                break;
+            case "":
+                System.out.println("semesterEnum не может быть null. Коллекция не сохранена");
+                return;
+            default:
+                System.out.println("Такого семестра нет. Коллекция не сохранена");
+                return;
+        }
+
+        String per_name;
+        if (str7.equals("")) {
+            System.out.println("Вы не ввели значение. Коллекция не сохранена");
+            return;
+        } else {
+            per_name = str7;
+        }
+
+        int height;
+        try {
+            if (str8.equals("")) {
+                System.out.println("Рост не может быть null. Коллекция не сохранена");
+                return;
+            } else {
+                height = Integer.parseInt(str8);
+                if (height <= 0) {
+                    System.out.println("Рост не модет быть меньше 0. Коллекция не сохранена");
+                    return;
+                }
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Вы ввели строку или число выходит за пределы int. Коллекция не сохранена");
+            return;
+        }
+
+        switch (str9.toUpperCase()) {
+            case "RED":
+                hairColor = Color.RED;
+                break;
+            case "BLUE":
+                hairColor = Color.BLUE;
+                break;
+            case "YELLOW":
+                hairColor = Color.YELLOW;
+                break;
+            case "ORANGE":
+                hairColor = Color.ORANGE;
+                break;
+            case "WHITE":
+                hairColor = Color.WHITE;
+                break;
+            case "":
+                System.out.println("hairColor не может быть null. Коллекция не сохранена");
+                return;
+            default:
+                System.out.println("Такого цвета нет. Коллекция не сохранена");
+                return;
+        }
+
+        switch (str10.toUpperCase()) {
+            case "USA":
+                nationality = Country.USA;
+                break;
+            case "CHINA":
+                nationality = Country.CHINA;
+                break;
+            case "INDIA":
+                nationality = Country.INDIA;
+                break;
+            case "VATICAN":
+                nationality = Country.VATICAN;
+                break;
+            case "":
+                System.out.println("nationality не может быть null. Коллекция не сохранена");
+                return;
+            default:
+                System.out.println("Такой страны нет. Коллекция не сохранена");
+                return;
+        }
+
+        double loc_x;
+        try {
+            if (str11.equals("")) {
+                System.out.println("x не может быть null. Коллекция не сохранена");
+                return;
+            } else {
+                loc_x = Double.parseDouble(str11);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Вы ввели строку или число выходит за пределы double. Коллекция не сохранена");
+            return;
+        }
+
+        int loc_y;
+        try {
+            if (str12.equals("")) {
+                System.out.println("y не может быть null. Коллекция не сохранена");
+                return;
+            } else {
+                loc_y = Integer.parseInt(str12);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Вы ввели строку или число выходит за пределы int. Коллекция не сохранена");
+            return;
+        }
+
+        int loc_z;
+        try {
+            if (str13.equals("")) {
+                System.out.println("z не может быть null. Коллекция не сохранена");
+                return;
+            } else {
+                loc_z = Integer.parseInt(str13);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Вы ввели строку или число выходит за пределы int. Коллекция не сохранена");
+            return;
+        }
+
+        studyGroup = new StudyGroup(id, name, new Coordinates(x, y), studentsCount, formOfEducation, semesterEnum,
                 new Person(per_name, height, hairColor, nationality, new Location(loc_x, loc_y, loc_z)));
         col.add(studyGroup);
         System.out.println("Элемент коллекции добавлен");
@@ -340,6 +553,7 @@ public class Implementation {
 
     /**
      * Метод обновляет значение элемента по его id
+     *
      * @param str
      */
     public void update(String str) {
@@ -354,13 +568,14 @@ public class Implementation {
             } else {
                 System.out.println("Коллекция пуста");
             }
-           } catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             System.out.println("Вы ввели строку или число выходит за пределы int. Введите снова");
         }
     }
 
     /**
      * Метод удаляет элемент по его id
+     *
      * @param str
      */
     public void remove_by_id(String str) {
@@ -381,18 +596,18 @@ public class Implementation {
     /**
      * Метод очищает коллекцию
      */
-    public void clear () {
+    public void clear() {
         col.clear();
         System.out.println("Коллекция очищена");
     }
 
     /**
      * Метод сохранят коллекцию в файл NewGroups.json
+     *
      * @throws IOException
      */
-    public void save () throws IOException {
-//      /home/s282747/Proga5/Groups.json
-        File outfile = new File("/home/s282747/Proga5/NewGroups.json");
+    public void save() throws IOException {
+        File outfile = new File("Groups.json");
         FileOutputStream fileOutputStream = new FileOutputStream(outfile);
         String out = gson.toJson(col);
         fileOutputStream.write(out.getBytes());
@@ -403,11 +618,11 @@ public class Implementation {
     /**
      * Метод исполняет скрипт из файла Script.txt
      * Если файл вызывается из файла, то ограничивает его выполнение до 3
+     *
      * @param str
      * @throws IOException
      */
     public void execute_script(String str) throws IOException {
-//      /home/s282747/Proga5/Script.txt
         String userCommand = "";
         String[] finalUserCommand;
         try {
@@ -430,7 +645,12 @@ public class Implementation {
                                 show();
                                 break;
                             case "add":
-                                add();
+                                String[] arr = new String[13];
+                                for (int i = 0; i < arr.length; i++) {
+                                    userCommand = commandReader.nextLine();
+                                    arr[i] = userCommand;
+                                }
+                                add(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9], arr[10], arr[11], arr[12]);
                                 break;
                             case "update_id":
                                 update(finalUserCommand[1]);
@@ -445,12 +665,12 @@ public class Implementation {
                                 save();
                                 break;
                             case "execute_script":
-                                i++;
-                                if (i <= 3) {
+                                j++;
+                                if (j == 3 ){
+                                    j = 0;
+                                    break;
+                                }else{
                                     execute_script(finalUserCommand[1]);
-                                } else {
-                                    i = 0;
-                                    System.out.println("Ограничение переполнения стека");
                                 }
                                 break;
                             case "add_if_max":
@@ -480,7 +700,6 @@ public class Implementation {
                     } catch (ArrayIndexOutOfBoundsException e) {
                         System.out.println("Отсутствует аргумент");
                     }
-                    System.out.println();
                 }
             }
         } catch (FileNotFoundException e) {
@@ -489,27 +708,27 @@ public class Implementation {
     }
 
     /**
-     * Метод добавляет новый элемент в коллекцию, если его id превышает id наибольшего элемента этой коллекции
-     * Метод находит наибольшее id и сравнивает его с новым элементом
+     * Метод добавляет новый элемент в коллекцию, если его height превышает height наибольшего элемента этой коллекции
+     * Метод находит наибольшее height и сравнивает его с новым элементом
      */
     public void add_if_max() {
         if (!(col.size() == 0)) {
-        long idMAX = 0;
-        for (StudyGroup s : col) {
-            if (s.getId() > idMAX) {
-                idMAX = s.getId();
+            long heightMAX = 0;
+            for (StudyGroup s : col) {
+                if (s.getGroupAdmin().getHeight() > heightMAX) {
+                    heightMAX = s.getId();
+                }
             }
-        }
-        List<StudyGroup> list = new ArrayList<>(col);
-        col.clear();
-        add();
-        long finalIdMAX = idMAX;
-        if (col.removeIf(col -> col.getId() < finalIdMAX)) {
-            col.addAll(list);
-            System.out.println("Элемент коллекции не сохранен, так как его id меньше id других элементов коллекции ");
-        } else {
-            col.addAll(list);
-            System.out.println("Элемент коллекции сохранен, так как его id больше id других элементов коллекции");
+            List<StudyGroup> list = new ArrayList<>(col);
+            col.clear();
+            add();
+            long finalHeightMAX = heightMAX;
+            if (col.removeIf(col -> col.getId() < finalHeightMAX)) {
+                col.addAll(list);
+                System.out.println("Элемент коллекции не сохранен, так как его height меньше height других элементов коллекции ");
+            } else {
+                col.addAll(list);
+                System.out.println("Элемент коллекции сохранен, так как его height больше height других элементов коллекции");
             }
         } else {
             System.out.println("Коллекция пуста");
@@ -517,27 +736,27 @@ public class Implementation {
     }
 
     /**
-     * Метод добавляет новый элемент в коллекцию, если его id меньше, чем у наименьшего элемента этой коллекции
-     * Метод находит наименьшее id и сравнивает его с новым элементом
+     * Метод добавляет новый элемент в коллекцию, если его height меньше, чем у наименьшего элемента этой коллекции
+     * Метод находит наименьшее height и сравнивает его с новым элементом
      */
-    public void add_if_min(){
+    public void add_if_min() {
         if (!(col.size() == 0)) {
-            long idMIN = 9223372036854775807L;
+            long heightMIN = 9223372036854775807L;
             for (StudyGroup s : col) {
-                if (s.getId() < idMIN) {
-                    idMIN = s.getId();
+                if (s.getGroupAdmin().getHeight() < heightMIN) {
+                    heightMIN = s.getGroupAdmin().getHeight();
                 }
             }
             List<StudyGroup> list = new ArrayList<>(col);
             col.clear();
             add();
-            long finalIdMIN = idMIN;
-            if (col.removeIf(col -> col.getId() < finalIdMIN)) {
+            long finalHeightMIN = heightMIN;
+            if (col.removeIf(col -> col.getId() < finalHeightMIN)) {
                 col.addAll(list);
-                System.out.println("Элемент коллекции не сохранен, так как его id больше id других элементов коллекции ");
+                System.out.println("Элемент коллекции не сохранен, так как его height больше height других элементов коллекции ");
             } else {
                 col.addAll(list);
-                System.out.println("Элемент коллекции сохранен, так как его id меньше id других элементов коллекции");
+                System.out.println("Элемент коллекции сохранен, так как его height меньше height других элементов коллекции");
             }
         } else {
             System.out.println("Коллекция пуста");
@@ -547,14 +766,15 @@ public class Implementation {
     /**
      * Метод удаляет из коллекции все элементы, превышающие заданный id
      * id вводится после вызова метода
+     *
      * @param str
      */
     public void remove_greater(String str) {
         try {
             if (!(col.size() == 0)) {
                 int oldSize = col.size();
-                int id = Integer.parseInt(str);
-                if (col.removeIf(col -> col.getId() > id)) {
+                int height = Integer.parseInt(str);
+                if (col.removeIf(col -> col.getGroupAdmin().getHeight() > height)) {
                     int newSize = oldSize - col.size();
                     if (newSize == 1) {
                         System.out.println("Был удален " + newSize + " элемент коллекции");
@@ -562,7 +782,7 @@ public class Implementation {
                         System.out.println("Было удалено " + newSize + " элемента коллекции");
                     }
                 } else {
-                    System.out.println("Коллекция не изменина, так как id всех элементов меньше указанного");
+                    System.out.println("Коллекция не изменина, так как height всех элементов меньше указанного");
                 }
             } else {
                 System.out.println("Коллекция пуста");
@@ -574,6 +794,7 @@ public class Implementation {
 
     /**
      * Метод удаляет из коллекции один элемент, значение поля studentsCount которого эквивалентно заданному
+     *
      * @param str
      */
     public void remove_any_by_students_count(String str) {
@@ -594,32 +815,41 @@ public class Implementation {
     /**
      * Метод выводит studentsCount в порядке возрастания
      */
-    public void print_field_ascending_students_count(){
-        List<StudyGroup> list = new ArrayList<>(col);
-        list.sort(new ComparatorByStudentCount());
-        for (StudyGroup s : list){
-            System.out.println("studentsCount"+" - "+s.getStudentsCount());
+    public void print_field_ascending_students_count() {
+        if (!(col.size() == 0)) {
+            List<StudyGroup> list = new ArrayList<>(col);
+            list.sort(new ComparatorByStudentCount());
+            for (StudyGroup s : list) {
+                System.out.println("studentsCount" + " - " + s.getStudentsCount());
+            }
+        }else{
+            System.out.println("Коллекция пустая");
         }
     }
 
     /**
      * Метод выводит значение formOfEducation в порядке убывания
      */
-    public void print_field_descending_form_of_education(){
-        List<StudyGroup> list = new ArrayList<>(col);
-        list.sort(new ComparatorByFormOfEducation());
-        for (StudyGroup s : list){
-            System.out.println("formOfEducation"+" - "+s.getFormOfEducation());
+    public void print_field_descending_form_of_education() {
+        if (!(col.size() == 0)) {
+            List<StudyGroup> list = new ArrayList<>(col);
+            list.sort(new ComparatorByFormOfEducation());
+            for (StudyGroup s : list) {
+                System.out.println("formOfEducation" + " - " + s.getFormOfEducation());
+            }
+        }else {
+            System.out.println("Коллекция пустая");
         }
     }
 
     /**
      * Метод загружает файл и проверяет его на права доступа
      * Метод загружает коллекцию проверяет поля и устанавливает случайное id и и датту инициаллизации
+     *
      * @param file
      * @throws IOException
      */
-    public void load (File file) throws IOException {
+    public void load(File file) throws IOException {
         int beginSize = col.size();
         try {
             if (!file.exists()) throw new FileNotFoundException();
@@ -635,98 +865,97 @@ public class Implementation {
             if (!wasStart) System.exit(1);
             else return;
         }
-        try {
-            if (file.length() == 0) throw new JsonSyntaxException("");
-        } catch (JsonSyntaxException ex) {
-            System.out.println("Файл пуст.");
-            if (!wasStart) System.exit(1);
-            else return;
-        }
         try (BufferedReader inputStreamReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
-            System.out.println("Файл загружен");
-            StringBuilder result = new StringBuilder();
-            String nextL;
-            while ((nextL = inputStreamReader.readLine()) != null) {
-                result.append(nextL);
-            }
-            Type collectionType = new TypeToken<PriorityQueue<StudyGroup>>() {}.getType();
-            Type collectionType2 = new TypeToken<List<StudyGroup>>(){}.getType();
-            try {
-                List<StudyGroup> groupList = gson.fromJson(String.valueOf(result), collectionType2);
-                try {
-                    for (StudyGroup s : groupList) {
-
-                        if (s.getName() == null) {
-                            throw new NullPointerException("name не может быть null");
-                        }
-                        if (s.getName().equals("")){
-                            throw new BadArgument("Строка name не может быть пустой");
-                        }
-                        if (s.getCoordinates() == null){
-                            throw new NullPointerException("coordinates не может быть null");
-                        }
-                        if (s.getCoordinates().getX() == null) {
-                            throw new NullPointerException("x не может быть null");
-                        }
-                        if (s.getStudentsCount() == null){
-                            throw new NullPointerException("studentCount не может быть null");
-                        }
-                        if (s.getStudentsCount() < 0 ){
-                            throw new BadArgument("StudentsCount должен быть больше нуля");
-                        }
-                        if (s.getFormOfEducation() == null){
-                            throw new NullPointerException("formOfEducation не может быть null");
-                        }
-                        if (s.getSemesterEnum() == null){
-                            throw new NullPointerException("SemesterEnum не может быть null");
-                        }
-                        if (s.getGroupAdmin() == null){
-                            throw new NullPointerException("groupAdmin не может быть null");
-                        }
-                        if (s.getGroupAdmin().getName() == null){
-                            throw new NullPointerException("name не может быть null");
-                        }
-                        if (s.getGroupAdmin().getName().equals("")){
-                            throw new BadArgument("Строка name не может быть пустой");
-                        }
-                        if (s.getGroupAdmin().getHeight() == null){
-                            throw new NullPointerException("height не может быть null");
-                        }
-                        if (s.getGroupAdmin().getHeight() <= 0){
-                            throw new BadArgument("height должен быть больше 0");
-                        }
-                        if (s.getGroupAdmin().getHairColor() == null){
-                            throw new NullPointerException("hairColor не может быть null");
-                        }
-                        if (s.getGroupAdmin().getNationality() == null){
-                            throw new NullPointerException("nationality не может быть null");
-                        }
-                        if (s.getGroupAdmin().getLocation() == null){
-                            throw new NullPointerException("location не может быть null");
-                        }
-                        if (s.getGroupAdmin().getLocation().getZ() == null){
-                            throw new NullPointerException("z не может быть null");
-                        }
-                    }
-                    PriorityQueue<StudyGroup> priorityQueue = gson.fromJson(result.toString(), collectionType);
-                    for (StudyGroup s : priorityQueue) {
-                        s.setId(s.getId());
-                        s.setCreationDate(s.getCreationDate());
-                        col.add(s);
-                    }
-                    System.out.println("Коллекция успешно загружена. Добавлено " + (col.size() - beginSize) + " элементов.");
-                } catch (NullPointerException e) {
-                    System.out.println(e.getMessage());
-                } catch (BadArgument badArgument) {
-                    System.out.println(badArgument.getMessage());;
+                System.out.println("Файл загружен");
+                StringBuilder result = new StringBuilder();
+                String nextL;
+                while ((nextL = inputStreamReader.readLine()) != null) {
+                    result.append(nextL);
                 }
-            } catch (JsonSyntaxException e){
-                System.out.println("Ошибка синтаксиса Json. Коллекция не может быть загружена.");
-                System.exit(1);
+                Type collectionType = new TypeToken<PriorityQueue<StudyGroup>>() {
+                }.getType();
+                Type collectionType2 = new TypeToken<List<StudyGroup>>() {
+                }.getType();
+                try {
+                    List<StudyGroup> groupList = gson.fromJson(String.valueOf(result), collectionType2);
+                    try {
+                        for (StudyGroup s : groupList) {
+                            if (s.getName() == null) {
+                                throw new NullPointerException("name не может быть null");
+                            }
+                            if (s.getName().equals("")) {
+                                throw new BadArgument("Строка name не может быть пустой");
+                            }
+                            if (s.getCoordinates() == null) {
+                                throw new NullPointerException("coordinates не может быть null");
+                            }
+                            if (s.getCoordinates().getX() == null) {
+                                throw new NullPointerException("x не может быть null");
+                            }
+                            if (s.getStudentsCount() == null) {
+                                throw new NullPointerException("studentCount не может быть null");
+                            }
+                            if (s.getStudentsCount() < 0) {
+                                throw new BadArgument("StudentsCount должен быть больше нуля");
+                            }
+                            if (s.getFormOfEducation() == null) {
+                                throw new NullPointerException("formOfEducation не может быть null");
+                            }
+                            if (s.getSemesterEnum() == null) {
+                                throw new NullPointerException("SemesterEnum не может быть null");
+                            }
+                            if (s.getGroupAdmin() == null) {
+                                throw new NullPointerException("groupAdmin не может быть null");
+                            }
+                            if (s.getGroupAdmin().getName() == null) {
+                                throw new NullPointerException("name не может быть null");
+                            }
+                            if (s.getGroupAdmin().getName().equals("")) {
+                                throw new BadArgument("Строка name не может быть пустой");
+                            }
+                            if (s.getGroupAdmin().getHeight() == null) {
+                                throw new NullPointerException("height не может быть null");
+                            }
+                            if (s.getGroupAdmin().getHeight() <= 0) {
+                                throw new BadArgument("height должен быть больше 0");
+                            }
+                            if (s.getGroupAdmin().getHairColor() == null) {
+                                throw new NullPointerException("hairColor не может быть null");
+                            }
+                            if (s.getGroupAdmin().getNationality() == null) {
+                                throw new NullPointerException("nationality не может быть null");
+                            }
+                            if (s.getGroupAdmin().getLocation() == null) {
+                                throw new NullPointerException("location не может быть null");
+                            }
+                            if (s.getGroupAdmin().getLocation().getZ() == null) {
+                                throw new NullPointerException("z не может быть null");
+                            }
+                        }
+                        PriorityQueue<StudyGroup> priorityQueue = gson.fromJson(result.toString(), collectionType);
+                        for (StudyGroup s : priorityQueue) {
+                            s.setCreationDate(s.getCreationDate());
+                            col.add(s);
+                            if (s.getId() > id) {
+                                id = s.getId();
+                            }
+                        }
+                        System.out.println("Коллекция успешно загружена. Добавлено " + (col.size() - beginSize) + " элементов.");
+                    } catch (NullPointerException e) {
+                        System.out.println("Загружена пустая коллекция");
+                    } catch (BadArgument badArgument) {
+                        System.out.println(badArgument.getMessage());
+                    }
+                } catch (JsonSyntaxException e) {
+                    System.out.println("Ошибка синтаксиса Json. Коллекция не может быть загружена.");
+                    System.exit(1);
+                }
             }
-        } catch (NullPointerException e){
-            e.printStackTrace();
         }
     }
-}
+
+
+
+
+
 

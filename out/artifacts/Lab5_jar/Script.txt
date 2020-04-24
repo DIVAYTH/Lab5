@@ -1,0 +1,18 @@
+add
+Dan
+10
+20
+30
+DISTANCE_EDUCATION
+FIRST
+Masha
+170
+RED
+USA
+10
+30
+50
+execute_script Script2
+
+
+

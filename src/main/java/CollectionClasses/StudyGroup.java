@@ -3,7 +3,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class StudyGroup implements Comparable<StudyGroup> {
-    private static long idNEW = (long)(Math.random() * 100);
     private long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -13,8 +12,8 @@ public class StudyGroup implements Comparable<StudyGroup> {
     private Semester semesterEnum; //Поле может быть null
     private Person groupAdmin; //Поле может быть null
 
-    public StudyGroup(String name, Coordinates coordinates, Integer studentsCount, FormOfEducation formOfEducation, Semester semesterEnum, Person groupAdmin) {
-        this.id = idNEW;
+    public StudyGroup(long id, String name, Coordinates coordinates, Integer studentsCount, FormOfEducation formOfEducation, Semester semesterEnum, Person groupAdmin) {
+        this.id = id;
         this.name = name;
         this.coordinates = coordinates;
         this.studentsCount = studentsCount;
@@ -22,10 +21,6 @@ public class StudyGroup implements Comparable<StudyGroup> {
         this.semesterEnum = semesterEnum;
         this.groupAdmin = groupAdmin;
         this.creationDate = LocalDateTime.now();
-    }
-
-    public void setId(long id) {
-        this.id = (long)(Math.random() * 100);
     }
 
     public void setCreationDate(LocalDateTime creationDate) {

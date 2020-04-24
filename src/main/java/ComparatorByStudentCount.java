@@ -4,9 +4,9 @@ import java.util.Comparator;
 /**
  * class comparator сортитует по значению StudentsCount
  */
-public class ComparatorByStudentCount implements Comparator {
+public class ComparatorByStudentCount implements Comparator<StudyGroup> {
     @Override
-    public int compare(Object o1, Object o2) {
-        return ((StudyGroup)o1).getStudentsCount() - ((StudyGroup)o2).getStudentsCount();
+    public int compare(StudyGroup o1, StudyGroup o2) {
+        return (o1).getStudentsCount() - (o2).getStudentsCount();
     }
 }
