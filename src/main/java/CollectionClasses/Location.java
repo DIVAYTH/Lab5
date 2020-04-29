@@ -11,24 +11,7 @@ public class Location {
         this.z = z;
     }
 
-    public double getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     public Integer getZ() {
         return z;
-    }
-
-    @Override
-    public String toString() {
-        return "Location{" +
-                "x=" + x +
-                ", y=" + y +
-                ", z=" + z +
-                '}';
     }
 }

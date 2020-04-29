@@ -1,4 +1,5 @@
 package CollectionClasses;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -23,13 +24,7 @@ public class StudyGroup implements Comparable<StudyGroup> {
         this.creationDate = LocalDateTime.now();
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = LocalDateTime.now();
-    }
-
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
+    public void setCreationDate() {this.creationDate = LocalDateTime.now();}
 
     public Long getId() {
         return id;
@@ -60,41 +55,11 @@ public class StudyGroup implements Comparable<StudyGroup> {
     }
 
     @Override
-    public String toString() {
-        return "StudyGroup{" +
-                "id=" + id  +
-                ", name='" + name + '\'' +
-                ", coordinates=" + coordinates +
-                ", creationDate=" + creationDate +
-                ", studentsCount=" + studentsCount +
-                ", formOfEducation=" + formOfEducation +
-                ", semesterEnum=" + semesterEnum +
-                ", groupAdmin=" + groupAdmin +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        StudyGroup that = (StudyGroup) o;
-        return id == that.id &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(coordinates, that.coordinates) &&
-                Objects.equals(creationDate, that.creationDate) &&
-                Objects.equals(studentsCount, that.studentsCount) &&
-                formOfEducation == that.formOfEducation &&
-                semesterEnum == that.semesterEnum &&
-                Objects.equals(groupAdmin, that.groupAdmin);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(id, name, coordinates, creationDate, studentsCount, formOfEducation, semesterEnum, groupAdmin);
     }
 
     @Override
     public int compareTo(StudyGroup o) {
-            return 0;
-    }
+        return name.compareTo(o.getName()); }
 }

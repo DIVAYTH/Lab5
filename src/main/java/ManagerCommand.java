@@ -7,9 +7,11 @@ import java.util.Scanner;
 public class ManagerCommand {
     private Implementation implement;
     private String userCommand = "";
+
     public ManagerCommand(Implementation implement) {
         this.implement = implement;
     }
+
     public void interactiveMod() throws IOException {
         try (Scanner commandReader = new Scanner(System.in)) {
             while (!userCommand.equals("exit")) {
@@ -41,24 +43,28 @@ public class ManagerCommand {
                             implement.clear();
                             break;
                         case "save":
-                            implement.save();
+                            try {
+                                implement.save();
+                            } catch (Exception e) {
+                                System.out.println("Нет прав для записи");
+                            }
                             break;
-                        case"execute_script":
+                        case "execute_script":
                             implement.execute_script(finalUserCommand[1]);
                             break;
                         case "add_if_max":
                             implement.add_if_max();
                             break;
-                        case"add_if_min":
+                        case "add_if_min":
                             implement.add_if_min();
                             break;
-                        case"remove_greater":
+                        case "remove_greater":
                             implement.remove_greater(finalUserCommand[1]);
                             break;
                         case "remove_any_by_students_count":
                             implement.remove_any_by_students_count(finalUserCommand[1]);
                             break;
-                        case"print_field_ascending_students_count":
+                        case "print_field_ascending_students_count":
                             implement.print_field_ascending_students_count();
                             break;
                         case "print_field_descending_form_of_education":
@@ -70,7 +76,7 @@ public class ManagerCommand {
                         default:
                             System.out.println("Неизвестная команда. Введите снова");
                     }
-                }catch(ArrayIndexOutOfBoundsException e){
+                } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("Отсутствует аргумент");
                 }
             }

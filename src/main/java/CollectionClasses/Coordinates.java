@@ -1,7 +1,7 @@
 package CollectionClasses;
 
 public class Coordinates {
-    private Integer x; //Поле не может быть null
+    public Integer x; //Поле не может быть null
     private double y;
 
     public Coordinates(Integer x, double y) {
@@ -11,17 +11,5 @@ public class Coordinates {
 
     public Integer getX() {
         return this.x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    @Override
-    public String toString() {
-        return "coordinates{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
     }
 }
