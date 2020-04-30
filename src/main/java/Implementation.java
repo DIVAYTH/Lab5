@@ -272,6 +272,70 @@ public class Implementation {
         System.out.println("Элемент коллекции добавлен");
     }
 
+    /**
+     * Метод осуществляющий выбор элемента типа Integer для add(перегруженного)
+     *
+     * @param arr
+     * @param str
+     * @return
+     */
+    Integer checkInt(String arr, String str) {
+        Integer values;
+        if (str.equals("")) {
+            System.out.println(arr + " не может быть null. Введите снова");
+            return null;
+        } else {
+            try {
+                values = Integer.parseInt(str);
+                return values;
+            } catch (NumberFormatException e) {
+                System.out.println("Вы ввели строку или число выходит за пределы. Введите снова");
+                return null;
+            }
+        }
+    }
+
+    /**
+     * Метод осуществляющий выбор элемента типа Double для add(перегруженного)
+     *
+     * @param arr
+     * @param str
+     * @return
+     */
+    Double checkDouble(String arr, String str) {
+        Double values;
+        if (str.equals("")) {
+            System.out.println(arr + " не может быть null. Введите снова");
+            return null;
+        } else {
+            try {
+                values = Double.parseDouble(str);
+            } catch (NumberFormatException e) {
+                System.out.println("Вы ввели строку или число выходит за пределы. Введите снова");
+                return null;
+            }
+        }
+        return values;
+    }
+
+    /**
+     * Метод осуществляющий выбор элемента типа String для add(перегруженного)
+     *
+     * @param arr
+     * @param str
+     * @return
+     */
+    String checkName(String arr, String str) {
+        String name;
+        if (str.equals("")) {
+            System.out.println(arr + " не может быть null. Введите снова");
+            return null;
+        } else {
+            name = str;
+            return name;
+        }
+    }
+
     public void add(String str1, String str2, String str3, String str4, String str5, String str6, String str7,
                     String str8, String str9, String str10, String str11, String str12, String str13) {
         StudyGroup studyGroup;
@@ -280,51 +344,25 @@ public class Implementation {
         Color hairColor;
         Country nationality;
         String[] arr = {"Имя группы", "x", "y", "studentsCount", "Имя главы группы", "x", "y", "z"};
-
         String name;
-        if (str1.equals("")) {
-            System.out.println("Имя группы не может быть null. Коллекция не сохранена");
-            return;
-        } else {
-            name = str1;
-        }
-
         int x;
-        try {
-            if (str2.equals("")) {
-                System.out.println("x не может быть null. Коллекция не сохранена");
-                return;
-            } else {
-                x = Integer.parseInt(str2);
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Вы ввели строку или число выходит за пределы int. Коллекция не сохранена");
-            return;
-        }
-
         double y;
-        try {
-            if (str3.equals("")) {
-                System.out.println("y не может быть null. Коллекция не сохранена");
-                return;
-            } else {
-                y = Double.parseDouble(str3);
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Вы ввели строку или число выходит за пределы double. Коллекция не сохранена");
-            return;
-        }
-
         int studentsCount;
+        String per_name;
+        double loc_x;
+        int loc_y;
+        int loc_z;
         try {
-            if (str4.equals("")) {
-                System.out.println("studentsCount не может быть null. Коллекция не сохранена");
-                return;
-            } else {
-                studentsCount = Integer.parseInt(str4);
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Вы ввели строку или число выходит за пределы int. Коллекция не сохранена");
+            name = checkName(arr[0], str1);
+            x = checkInt(arr[1], str2);
+            y = checkDouble(arr[2], str3);
+            studentsCount = checkInt(arr[3], str4);
+            per_name = checkName(arr[4], str7);
+            loc_x = checkDouble(arr[5], str11);
+            loc_y = checkInt(arr[6], str12);
+            loc_z = checkInt(arr[7], str13);
+        } catch (NullPointerException e) {
+            System.out.println("Ошибка при добавлении элемента");
             return;
         }
 
@@ -348,14 +386,6 @@ public class Implementation {
         } catch (IllegalArgumentException e) {
             System.out.println("Такого семестра нет");
             return;
-        }
-
-        String per_name;
-        if (str7.equals("")) {
-            System.out.println("Вы не ввели значение. Коллекция не сохранена");
-            return;
-        } else {
-            per_name = str7;
         }
 
         Integer height;
@@ -394,45 +424,6 @@ public class Implementation {
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Такой страны нет. Введите снова");
-            return;
-        }
-
-        double loc_x;
-        try {
-            if (str11.equals("")) {
-                System.out.println("x не может быть null. Коллекция не сохранена");
-                return;
-            } else {
-                loc_x = Double.parseDouble(str11);
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Вы ввели строку или число выходит за пределы double. Коллекция не сохранена");
-            return;
-        }
-
-        int loc_y;
-        try {
-            if (str12.equals("")) {
-                System.out.println("y не может быть null. Коллекция не сохранена");
-                return;
-            } else {
-                loc_y = Integer.parseInt(str12);
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Вы ввели строку или число выходит за пределы int. Коллекция не сохранена");
-            return;
-        }
-
-        int loc_z;
-        try {
-            if (str13.equals("")) {
-                System.out.println("z не может быть null. Коллекция не сохранена");
-                return;
-            } else {
-                loc_z = Integer.parseInt(str13);
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Вы ввели строку или число выходит за пределы int. Коллекция не сохранена");
             return;
         }
 
